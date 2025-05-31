@@ -39,6 +39,85 @@ Monolithic architecture is a type of application design where all components, in
 
 ---
 
+## Create Root Maven Project
+
+1. Create a root Maven project with the following Maven coordinates:
+
+    ```yml
+    groupId: com.supersection
+    artifactId: bookstore-microservice-application
+    version: 0.0.1-SNAPSHOT
+    type: pom
+    ```
+
+2. Create `.sdkmanrc` file with Java and Maven version configured
+
+   ```yml
+   java=21.0.7-tem
+   maven=3.9.6
+   ```
+
+   This file allows SDKMAN to automatically switch to the specified versions when you enter the project directory.
+
+### SDKMAN Command Reference
+
+```bash
+# List all available versions of Java
+sdk list java
+
+# Install a specific Java version
+sdk install java 21.0.7-tem
+
+# Install a specific Maven version
+sdk install maven 3.9.6
+
+# Apply the versions specified in .sdkmanrc
+sdk env
+
+# Automatically apply .sdkmanrc when changing directories (if enabled)
+sdk env install
+```
+
+### Enable Auto-Environment Switching
+
+To allow SDKMAN to automatically switch SDK versions based on the `.sdkmanrc` file:
+
+1. View the current SDKMAN configuration:
+
+   ```bash
+   cat ~/.sdkman/etc/config
+   ```
+
+2. Modify the config by setting:
+
+   ```ini
+   sdkman_auto_env=true
+   ```
+
+   This enables SDKMAN to automatically detect and use the specified SDK versions whenever you cd into a directory containing a .sdkmanrc file.
+
+#### Final Check
+
+After making changes, restart your terminal and navigate to your project directory:
+
+```bash
+cd /path/to/your/project
+```
+
+You should see SDKMAN automatically switching to the configured Java and Maven versions.
+
+### Setup Maven Wrapper (`mvnw`)
+
+The Maven Wrapper is a small script and supporting files added to your project that ensure a specific Maven version is used — **without requiring it to be installed globally**.
+
+Install Maven Wrapper using:
+
+```bash
+mvn wrapper:wrapper
+```
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
