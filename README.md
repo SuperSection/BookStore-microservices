@@ -233,6 +233,87 @@ Access Git metadata at: <http://localhost:8081/actuator/info>
 
 ---
 
+## Setup Swagger API Documentation
+
+For the integration between spring-boot and swagger-ui, add the dependency in your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.8.8</version>
+</dependency>
+```
+
+- The Swagger UI page will then be available at `http://server:port/context-path/swagger-ui.html`
+- The OpenAPI description will be available in json format at: `http://server:port/context-path/v3/api-docs`
+
+Refer to the Official [springdoc-openapi]((https://springdoc.org/)) page
+
+---
+
+## Integration Testing with Rest-Assured
+
+[Rest-Assured](https://github.com/rest-assured/rest-assured) is a Java DSL for testing RESTful APIs. It simplifies writing expressive and maintainable API tests with fluent syntax.
+
+Add the following dependency to your `pom.xml`:
+
+```xml
+<dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>5.5.5</version>
+      <scope>test</scope>
+</dependency>
+```
+
+Notes:
+
+1. You should place rest-assured before the JUnit dependency declaration in your `pom.xml` / `build.gradle` in order to make sure that the correct version of Hamcrest is used. 
+2. REST Assured includes JsonPath and XmlPath as transitive dependencies
+
+---
+
+## Java Code Formatter
+
+Add the following plugin to your `pom.xml` (in each service):
+
+```xml
+<plugin>
+    <groupId>com.diffplug.spotless</groupId>
+    <artifactId>spotless-maven-plugin</artifactId>
+    <version>2.44.5</version>
+    <configuration>
+        <java>
+            <importOrder />
+            <removeUnusedImports />
+            <palantirJavaFormat>
+                <version>2.35.0</version>
+            </palantirJavaFormat>
+            <formatAnnotations />
+        </java>
+    </configuration>
+    <executions>
+        <execution>
+            <phase>compile</phase>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
+
+Run the following command to apply consistent code formatting:
+
+```bash
+./mvnw spotless:apply
+```
+
+> **NOTE**: To run the command from the Root project directory, you need to add the same plugin in the root `pom.xml` build config.
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
