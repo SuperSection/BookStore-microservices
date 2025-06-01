@@ -118,6 +118,121 @@ mvn wrapper:wrapper
 
 ---
 
+## Catalog-service 
+
+Create a new Spring Boot microservice with the name “catalog-service” and add the following features:
+
+- Add dependencies:
+   - Web
+   - Validation
+   - Spring Data JPA
+   - Flyway
+   - PostgreSQL
+   - Actuator
+   - Prometheus
+   - DevTools
+   - Configuration Processor
+   - Testcontainers
+
+- Add springdoc-openapi dependency
+- Add rest-assured dependency
+- Add git-commit-id-maven-plugin
+- Add spotless-maven-plugin
+- Create docker-compose file for PostgreSQL
+- Add GitHub Action workflow
+
+---
+
+## Application Monitoring with Spring Boot Actuator
+
+Spring Boot Actuator provides production-ready features to monitor and manage applications. It exposes a wide range of endpoints (like `/actuator/health`, `/actuator/info`, `/actuator/metrics`) which help in observing system health, build data, and runtime environment.
+
+### Actuator Setup
+
+1. Dependency (Spring Boot Starter):
+
+    ```xml
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    ```
+
+2. Set catalog-service server port on `8081`
+3. Access Actuator endpoints in browser: <http://localhost:8081/actuator>
+4. Expose all actuator endpoints (Add the following in `application.properties`):
+
+    ```properties
+    management.endpoints.web.exposure.include=*
+    ```
+
+### Show Build Info
+
+`pom.xml` build Configuration:
+
+```xml
+<plugin>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-maven-plugin</artifactId>
+  <executions>
+    <execution>
+      <goals>
+        <goal>build-info</goal>
+      </goals>
+    </execution>
+  </executions>
+</plugin>
+```
+
+This will add build metadata like version, group, and timestamp, which also appears in `/actuator/info`.
+
+### Show Git Commit Info in `/actuator/info`
+
+The `git-commit-id-maven-plugin` extracts Git metadata and generates `git.properties` under `target/classes`.
+
+1. Plugin Setup in `pom.xml`:
+
+    ```xml
+    <plugin>
+      <groupId>io.github.git-commit-id</groupId>
+      <artifactId>git-commit-id-maven-plugin</artifactId>
+      <executions>
+        <execution>
+          <goals>
+            <goal>revision</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <failOnNoGitDirectory>false</failOnNoGitDirectory>
+        <failOnUnableToExtractRepoInfo>false</failOnUnableToExtractRepoInfo>
+        <generateGitPropertiesFile>true</generateGitPropertiesFile>
+        <includeOnlyProperties>
+          <includeOnlyProperty>^git.branch$</includeOnlyProperty>
+          <includeOnlyProperty>^git.commit.id.abbrev$</includeOnlyProperty>
+          <includeOnlyProperty>^git.commit.user.name$</includeOnlyProperty>
+          <includeOnlyProperty>^git.commit.message.full$</includeOnlyProperty>
+        </includeOnlyProperties>
+      </configuration>
+    </plugin>
+   ```
+
+2. Once configured, build the app:
+
+    ```bash
+    mvn clean package
+    ```
+
+3. Enable full Git metadata display in `/actuator/info`
+
+    ```properties
+    management.info.git.mode=full
+    ```
+
+Access Git metadata at: <http://localhost:8081/actuator/info>
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
