@@ -314,6 +314,66 @@ Run the following command to apply consistent code formatting:
 
 ---
 
+## Docker Compose Setup
+
+### Infrastructure & Dev Tools (`infra.yml`)
+
+We are defining all supporting services & dev tools under the `deployment/docker-compose/infra.yml` file. They are needed to run or test the application locally. It includes:
+
+- `catalog-db` → PostgreSQL image: `postgres:17-alpine3.21` (primary RDBMS)
+
+Spin up the services under this file:
+
+```bash
+docker compose -f ./deployment/docker-compose/infra.yml up -d
+```
+
+---
+
+## GitHub Actions CI Setup
+
+This project uses GitHub Actions for automated Continuous Integration.
+
+- Runs on every push and pull request
+- Setup Java 21 with Maven caching
+- Lints code and checks formatting
+- Build the project with Maven
+
+CI configuration for each service is defined under `.github/workflows/`.
+
+> This ensures every change is validated early and consistently across environments.
+
+---
+
+## Taskfile Setup
+
+1. Refer to the [Official Page](https://taskfile.dev/installation/) for installing task locally on your machine.
+
+2. Check if task is installed correctly:
+
+    ```bash
+    task --version
+    ```
+
+3. Define the `Taskfile.yml` in the root project directory.
+4. Afterward you can simply run specific `task` command to handle various project related commands in a consistent way.
+
+### Example usage of `task` command
+
+- To build projects while keeping the code properly formatted beforehand:
+    
+    ```bash
+    task
+    ```
+
+- To start infrastructure service containers (`infra.yml`)
+
+    ```bash
+    task start_infra
+    ```
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
