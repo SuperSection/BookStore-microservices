@@ -5,6 +5,7 @@ vars:
   MVNW: '{{if eq .GOOS "windows"}}mvnw.cmd{{else}}./mvnw{{end}}'
   DC_DIR: "deployment/docker-compose"
   INFRA_DC_FILE: "{{.DC_DIR}}/infra.yml"
+  PORTAINER_DC_FILE: "devtools/docker-compose/portainer.yml"
   SLEEP_CMD: '{{if eq .GOOS "windows"}}timeout{{else}}sleep{{end}}'
 
 tasks:
@@ -38,6 +39,21 @@ tasks:
       - task: stop_infra
       - task: sleep
       - task: start_infra
+
+  start_portainer:
+    cmds:
+      - "docker compose -f {{.PORTAINER_DC_FILE}} up -d"
+
+  stop_portainer:
+    cmds:
+      - "docker compose -f {{.PORTAINER_DC_FILE}} stop"
+      - "docker compose -f {{.PORTAINER_DC_FILE}} rm -f"
+
+  restart_portainer:
+    cmds:
+      - task: stop_portainer
+      - task: sleep
+      - task: start_portainer
 
   sleep:
     vars:
