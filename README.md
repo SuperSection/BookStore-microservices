@@ -374,6 +374,99 @@ CI configuration for each service is defined under `.github/workflows/`.
 
 ---
 
+## Dockerizing Services
+
+The maven-plugin (build tools) can create an **OCI image** from a jar or war file using **Cloud Native Buildpacks** (CNB). Images can be built on the command-line using the `build-image` goal.
+
+Refer to the Official [Spring Boot Docs for Building Images](https://docs.spring.io/spring-boot/maven-plugin/build-image.html).
+
+### 1. Configure `spring-boot-maven-plugin` to create docker image
+    
+- Add a property in `pom.xml`:
+
+    ```xml
+    <dockerImageName>supersection/bookstore-${project.artifactId}</dockerImageName>
+    ```
+
+- Add configuration under `spring-boot-maven-plugin` in the build section of `pom.xml`:
+
+    ```xml
+    <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+            <image>
+                <name>${dockerImageName}</name>
+                <!-- <builder>dashaun/builder:tiny</builder>  ## Include this if you're on Mac or need to support arm64 docker image -->
+            </image>
+        </configuration>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>build-info</goal>
+                </goals>
+            </execution>
+        </executions>
+    </plugin>
+    ```
+
+- Run the following to build the docker image
+    
+    ```bash
+    # From root directory
+    ./mvnw -pl catalog-service spring-boot:build-image -DskipTests
+    ```
+
+### 2. Create DockerHub Access Token
+
+- Login into your [DockerHub](https://hub.docker.com/explore) account
+- Go to your `Account settings > Personal access tokens > Generate new token`
+- Copy the access token
+
+### 3. Configure GitHub Actions Secrets
+
+Configure DockerHub Credentials as Secrets in GitHub Repository:
+
+- Go to your project repository `Settings > Secrets and variables > Actions`
+- Create the following repository secrets:
+  - `DOCKERHUB_USERNAME`
+  - `DOCKERHUB_TOKEN`
+
+### 4. Setup CI pipeline to Build & Push Image to DockerHub
+
+Update GitHub Actions to build docker image and push it to DockerHub:
+
+- Add action to Login into Docker Hub:
+
+    ```yml
+    - if: ${{ github.ref == 'refs/heads/main' }}
+      name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    ```
+
+- Set Docker Image Name as an environment variable:
+
+    ```yml
+    env:
+      DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/bookstore-catalog-service
+    ```
+
+- Add action to build the image and push it to your Docker Hub account:
+
+    ```yml
+    - if: ${{ github.ref == 'refs/heads/main' }}
+      name: Build and Publish Docker Image
+      run: |
+        ./mvnw spring-boot:build-image -DskipTests
+        echo "Pushing the image $DOCKER_IMAGE_NAME to Docker Hub..."
+        docker push $DOCKER_IMAGE_NAME
+    ```
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
