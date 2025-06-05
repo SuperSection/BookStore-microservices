@@ -15,5 +15,4 @@ class RabbitMQListener {
     public void handleDeliveredOrder(MyPayload payload) {
         System.out.println("Delivered Order: " + payload.content());
     }
-
 }
