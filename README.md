@@ -467,6 +467,26 @@ Update GitHub Actions to build docker image and push it to DockerHub:
 
 ---
 
+## RabbitMQ Messaging Patterns
+
+![RabbitMQ Messaging Patterns](./diagram/rabbitmq.png)
+
+### Exchange Types
+
+1. **Direct Exchange:** Messages are being routed based on routing keys. This means that when the routing key matches the binding key, the message gets delivered to its corresponding queue.
+<br> _Example:_ `orders`, `cancellations`, `accounts`, `new-order`, `delivered-orders` etc.
+
+2. **Topic Exchange:** Routing happens based on patterns and wildcards.
+<br> _Example:_ `orders.new.*`, `orders.*.cancelled`, `order.new.#` etc
+
+3. **Fanout Exchange:** Binding key is ignored, RabbitMQ broadcasts the messages to all the queues that are bound to it regardless of the routing key.
+
+> **NOTE:** If there are multiple consumers connected to a single queue, RabbitMQ uses a round-robin dispatching method to distribute messages among them. That means, each message is only delivered to one consumer at a time.
+
+We are going to utilize simple Direct Exchange as per our use case.
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
