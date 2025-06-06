@@ -18,8 +18,16 @@ public class ProductServiceClient {
 
     public Optional<Product> getProductByCode(String code) {
         log.info("Fetching product with code: {}", code);
-        var product =
-                restClient.get().uri("/api/products/{code}", code).retrieve().body(Product.class);
-        return Optional.ofNullable(product);
+        try {
+            var product = restClient
+                    .get()
+                    .uri("/api/products/{code}", code)
+                    .retrieve()
+                    .body(Product.class);
+            return Optional.ofNullable(product);
+        } catch (Exception e) {
+            log.error("Error fetching product for code: {}", code, e);
+            return Optional.empty();
+        }
     }
 }
