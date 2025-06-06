@@ -523,6 +523,31 @@ We are going to use `RestClient` for calling catalog-service from order-service.
 
 ---
 
+## Resilience Patterns
+
+Resilience patterns are crucial for building robust and fault-tolerant applications, especially in microservices architectures. These patterns help applications handle failures gracefully and prevent cascading failures across services.
+
+- **Timeout:** This pattern sets a maximum time for a request to complete, preventing the application from waiting indefinitely for a slow or unresponsive service.
+- **Retry:** Allows an application to automatically retry a failed request after a short delay, which can be useful for handling transient failures.
+- **Circuit Breaker:** Prevents an application from repeatedly trying to access a failing service. It "opens" the circuit when a service fails, stopping requests for a period, and then "closes" it again when the service recovers.
+- **Bulkhead:** Isolates different parts of an application to prevent a failure in one part from affecting others. It limits concurrent access to resources.
+- **Rate Limiter:** Limits the number of requests an application can make to a service within a given period, preventing overload.
+- **Fallback:** This pattern defines an alternative action to take when a request fails, such as returning a default value or displaying an error message.
+
+> [Resilience4j](https://resilience4j.readme.io/) is a fault tolerance library for Java
+
+### Add the following [Resilience4j SpringBoot3 dependency](https://mvnrepository.com/artifact/io.github.resilience4j/resilience4j-spring-boot3)
+
+```xml
+<dependency>
+    <groupId>io.github.resilience4j</groupId>
+    <artifactId>resilience4j-spring-boot3</artifactId>
+    <version>2.3.0</version>
+</dependency>
+```
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
