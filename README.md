@@ -487,6 +487,25 @@ We are going to utilize simple Direct Exchange as per our use case.
 
 ---
 
+## `TestDataFactory` class in Order Service
+
+- Generates test data for unit/integration tests — specifically `CreateOrderRequest` objects with valid and invalid data.
+- Keeps tests clean, reusable, and focused on behavior, not data creation.
+- Uses [Instancio](https://www.instancio.org/) library to auto-generate complex nested objects.
+
+### Add Instancio dependency to pom.xml
+
+```xml
+<dependency>
+  <groupId>org.instancio</groupId>
+  <artifactId>instancio-core</artifactId>
+  <version>3.4.0</version>
+  <scope>test</scope>
+</dependency>
+```
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
