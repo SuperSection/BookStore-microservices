@@ -1,5 +1,6 @@
 package com.supersection.bookstore.orders.clients.catalog;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ public class ProductServiceClient {
         this.restClient = restClient;
     }
 
+    @CircuitBreaker(name = "catalog-service")
     @Retry(name = "catalog-service", fallbackMethod = "getProductByCodeFallback")
     public Optional<Product> getProductByCode(String code) {
         log.info("Fetching product with code: {}", code);
@@ -26,7 +28,7 @@ public class ProductServiceClient {
     }
 
     Optional<Product> getProductByCodeFallback(String code, Throwable t) {
-        System.out.println("ProductServiceClient.getProductByCodeFallback: code::" + code);
+        log.info("catalog-service get product by code fallback: code:{}, Error: {} ", code, t.getMessage());
         return Optional.empty();
     }
 }
