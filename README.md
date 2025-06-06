@@ -506,6 +506,23 @@ We are going to utilize simple Direct Exchange as per our use case.
 
 ---
 
+## Service-to-Service calls using RestClient
+
+Refer to the Official Spring Boot documentation for [REST Clients Integration](https://docs.spring.io/spring-framework/reference/integration/rest-clients.html)
+
+We are going to use `RestClient` for calling catalog-service from order-service.
+
+1. Add the catalog-service base URL in the `application.properties` of order-service:
+    
+   ```properties
+    orders.catalog-service-url=http://localhost:8081
+    ```
+
+2. Setup `RestClient` bean with a base URL from `ApplicationProperties` to enable HTTP calls to the Catalog Service.
+3. Use `RestClient` to fetch product details by product code from the `/api/products/{code}` endpoint.
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
