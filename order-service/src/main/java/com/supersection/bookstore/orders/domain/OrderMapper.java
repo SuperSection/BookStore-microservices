@@ -1,7 +1,7 @@
 package com.supersection.bookstore.orders.domain;
 
 import com.supersection.bookstore.orders.domain.dtos.CreateOrderRequest;
-import com.supersection.bookstore.orders.domain.dtos.OrderItem;
+import com.supersection.bookstore.orders.domain.models.OrderItem;
 import com.supersection.bookstore.orders.domain.models.OrderStatus;
 import java.util.HashSet;
 import java.util.Set;

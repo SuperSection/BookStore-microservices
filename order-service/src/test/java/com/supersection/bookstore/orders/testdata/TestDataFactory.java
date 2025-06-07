@@ -3,9 +3,9 @@ package com.supersection.bookstore.orders.testdata;
 import static org.instancio.Select.field;
 
 import com.supersection.bookstore.orders.domain.dtos.CreateOrderRequest;
-import com.supersection.bookstore.orders.domain.dtos.OrderItem;
 import com.supersection.bookstore.orders.domain.models.Address;
 import com.supersection.bookstore.orders.domain.models.Customer;
+import com.supersection.bookstore.orders.domain.models.OrderItem;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;

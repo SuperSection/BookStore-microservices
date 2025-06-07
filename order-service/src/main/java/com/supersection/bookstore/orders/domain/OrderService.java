@@ -2,6 +2,7 @@ package com.supersection.bookstore.orders.domain;
 
 import com.supersection.bookstore.orders.domain.dtos.CreateOrderRequest;
 import com.supersection.bookstore.orders.domain.dtos.CreateOrderResponse;
+import com.supersection.bookstore.orders.domain.models.OrderCreatedEvent;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.slf4j.Logger;
@@ -17,10 +18,13 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderValidator orderValidator;
+    private final OrderEventService orderEventService;
 
-    public OrderService(OrderRepository orderRepository, OrderValidator orderValidator) {
+    public OrderService(
+            OrderRepository orderRepository, OrderValidator orderValidator, OrderEventService orderEventService) {
         this.orderRepository = orderRepository;
         this.orderValidator = orderValidator;
+        this.orderEventService = orderEventService;
     }
 
     public CreateOrderResponse createOrder(String userName, @Valid CreateOrderRequest request) {
@@ -31,6 +35,9 @@ public class OrderService {
         OrderEntity savedOrder = orderRepository.save(newOrder);
 
         log.info("Created Order with orderNumber={}", savedOrder.getOrderNumber());
+        OrderCreatedEvent orderCreatedEvent = OrderEventMapper.buildOrderCreatedEvent(savedOrder);
+        orderEventService.save(orderCreatedEvent);
+
         return new CreateOrderResponse(savedOrder.getOrderNumber());
     }
 }
