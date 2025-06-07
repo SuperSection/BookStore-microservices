@@ -1,2 +1,5 @@
 /mvnw text eol=lf
 *.cmd text eol=crlf
+
+# Force text files to use Unix-style LF line endings
+*.java text eol=lf

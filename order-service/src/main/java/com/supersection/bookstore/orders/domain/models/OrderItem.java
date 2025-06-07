@@ -1,4 +1,4 @@
-package com.supersection.bookstore.orders.domain.dtos;
+package com.supersection.bookstore.orders.domain.models;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
