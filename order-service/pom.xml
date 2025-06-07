@@ -20,6 +20,7 @@
 		<spotless-maven-plugin.version>2.44.5</spotless-maven-plugin.version>
 		<instancio.version>5.4.1</instancio.version>
 		<resilience4j.version>2.3.0</resilience4j.version>
+		<shedlock.version>6.7.0</shedlock.version>
 		<wiremock.version>3.13.0</wiremock.version>
 		<wiremock-testcontainers.version>1.0-alpha-15</wiremock-testcontainers.version>
 		<dockerImageName>supersection/bookstore-${project.artifactId}</dockerImageName>
@@ -63,6 +64,16 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>${springdoc-openapi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.javacrumbs.shedlock</groupId>
+			<artifactId>shedlock-spring</artifactId>
+			<version>${shedlock.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.javacrumbs.shedlock</groupId>
+			<artifactId>shedlock-provider-jdbc-template</artifactId>
+			<version>${shedlock.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
