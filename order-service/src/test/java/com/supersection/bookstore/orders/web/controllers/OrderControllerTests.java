@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import com.supersection.bookstore.orders.AbstractIntegrationTest;
 import com.supersection.bookstore.orders.testdata.TestDataFactory;
 import io.restassured.http.ContentType;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ class OrderControllerTests extends AbstractIntegrationTest {
 
         @Test
         void shouldCreateOrderSuccessfully() {
+            mockGetProductByCode("P100", "Product 1", new BigDecimal("75.50"));
             var payload =
                     """
                     {

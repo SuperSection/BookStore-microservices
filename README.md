@@ -548,6 +548,34 @@ Resilience patterns are crucial for building robust and fault-tolerant applicati
 
 ---
 
+## [WireMock](https://wiremock.org/) to mock External API calls for Testing
+
+- Refer to Official GitHub page of [WireMock module for Testcontainers for Java](https://github.com/wiremock/wiremock-testcontainers-java)
+- [Testcontainers](https://testcontainers.com/) > Guides > [Testing REST API integrations using WireMock](https://testcontainers.com/guides/testing-rest-api-integrations-using-wiremock/)
+
+### Add the following WireMock dependencies
+
+```xml
+<dependency>
+    <groupId>org.wiremock</groupId>
+    <artifactId>wiremock-standalone</artifactId>
+    <version>${wiremock.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.wiremock.integrations.testcontainers</groupId>
+    <artifactId>wiremock-testcontainers-module</artifactId>
+    <version>${wiremock-testcontainers.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+- Use `WireMockContainer` to mock the catalog-service integration for testing
+- Overwrite the `orders.catalog-service-url` to take `wiremockServer`'s `baseUrl`
+- `mockGetProductByCode` method will be used to mock the behaviour of API calling to catalog-service
+
+---
+
 ### Author
 
 - [Soumo Sarkar](https://www.linkedin.com/in/soumo-sarkar/)
