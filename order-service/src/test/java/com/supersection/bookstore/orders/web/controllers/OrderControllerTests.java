@@ -10,7 +10,9 @@ import java.math.BigDecimal;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.jdbc.Sql;
 
+@Sql("/test-orders.sql")
 class OrderControllerTests extends AbstractIntegrationTest {
 
     @Nested
@@ -19,7 +21,7 @@ class OrderControllerTests extends AbstractIntegrationTest {
 
         @Test
         void shouldCreateOrderSuccessfully() {
-            mockGetProductByCode("P100", "Product 1", new BigDecimal("75.50"));
+            mockGetProductByCode("P100", "Product 1", new BigDecimal("25.50"));
             var payload =
                     """
                     {
@@ -40,7 +42,7 @@ class OrderControllerTests extends AbstractIntegrationTest {
                             {
                                 "code": "P100",
                                 "name": "Product 1",
-                                "price": 75.50,
+                                "price": 25.50,
                                 "quantity": 1
                             }
                         ]
