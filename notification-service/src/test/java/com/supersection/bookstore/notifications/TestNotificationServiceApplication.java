@@ -1,4 +1,4 @@
-package com.supersection.notifications;
+package com.supersection.bookstore.notifications;
 
 import org.springframework.boot.SpringApplication;
 
