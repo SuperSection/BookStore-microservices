@@ -75,3 +75,10 @@ services:
       resources:
         limits:
           memory: 500m
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
