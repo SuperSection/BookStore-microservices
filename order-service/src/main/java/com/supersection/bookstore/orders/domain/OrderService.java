@@ -2,10 +2,13 @@ package com.supersection.bookstore.orders.domain;
 
 import com.supersection.bookstore.orders.domain.dtos.CreateOrderRequest;
 import com.supersection.bookstore.orders.domain.dtos.CreateOrderResponse;
+import com.supersection.bookstore.orders.domain.dtos.OrderDTO;
 import com.supersection.bookstore.orders.domain.models.OrderCreatedEvent;
 import com.supersection.bookstore.orders.domain.models.OrderStatus;
+import com.supersection.bookstore.orders.domain.models.OrderSummary;
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,6 +42,16 @@ public class OrderService {
         orderEventService.save(orderCreatedEvent);
 
         return new CreateOrderResponse(savedOrder.getOrderNumber());
+    }
+
+    public List<OrderSummary> findOrders(String userName) {
+        return orderRepository.findByUserName(userName);
+    }
+
+    public Optional<OrderDTO> findUserOrder(String userName, String orderNumber) {
+        return orderRepository
+                .findByUserNameAndOrderNumber(userName, orderNumber)
+                .map(OrderMapper::convertToDTO);
     }
 
     public void processNewOrders() {
